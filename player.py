@@ -1,9 +1,10 @@
 import pygame
-from typing import Literal
+from typing import List, Literal
 from settings import *
+from debug import debug
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, obstacle_sprites):
+    def __init__(self, pos, groups, obstacle_sprites: List[pygame.sprite.Sprite]):
         super().__init__(groups)
         self.image = pygame.image.load('./graphic/test/player.png').convert_alpha()
         self.rect: pygame.rect.Rect = self.image.get_rect(topleft = pos)
@@ -34,14 +35,16 @@ class Player(pygame.sprite.Sprite):
         if self.direction.magnitude() != 0:
             self.direction = self.direction.normalize()
 
-        self.rect.x += self.direction.x * speed
+        self.rect.x += int(self.direction.x * speed)
         self.collision('horizontal')
-        self.rect.y += self.direction.y * speed
+        self.rect.y += int(self.direction.y * speed)
         self.collision('vertical')
     
     def collision(self, direction: Literal['horizontal', 'vertical']):
         if direction == 'horizontal':
             for sprite in self.obstacle_sprites:
+                if sprite.rect is None:
+                    return None
                 if sprite.rect.colliderect(self.rect):
                     if self.direction.x > 0: # Moving right
                         self.rect.right = sprite.rect.left
@@ -50,6 +53,8 @@ class Player(pygame.sprite.Sprite):
 
         if direction == 'vertical':
             for sprite in self.obstacle_sprites:
+                if sprite.rect is None:
+                    return None
                 if sprite.rect.colliderect(self.rect):
                     if self.direction.y > 0: # Moving down
                         self.rect.bottom = sprite.rect.top
