@@ -41,12 +41,19 @@ class YSortCamerGroup(pygame.sprite.Group):
         self.half_height = self.display_surface.get_size()[1] // 2
         # self.offset = pygame.math.Vector2(self.half_width, self.half_height) Camera in half screen
         self.offset = pygame.math.Vector2(self.half_width, self.half_height)
+        
+        #creating the floor
+        self.floor_surf = pygame.image.load('./graphics/tilemap/ground.png').convert()
+        self.floor_rect = self.floor_surf.get_rect(topleft = (0, 0))
 
     def custom_draw(self, player: Player):
 
         #getting the offset
         self.offset.x = player.rect.centerx - self.half_width
         self.offset.y =  player.rect.centery - self.half_height
+
+        floor_offset_pos = self.floor_rect.topleft - self.offset
+        self.display_surface.blit(self.floor_surf, floor_offset_pos)
 
         for sprite in sorted(self.sprites(), key=lambda sprite: sprite.rect.centery): # type: ignore #O bloco nao fica em cima do player
             assert sprite.rect is not None

@@ -7,7 +7,7 @@ from tile import Tile
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, groups, obstacle_sprites: List[Tile]):
         super().__init__(groups)
-        self.image = pygame.image.load('./graphic/test/player.png').convert_alpha()
+        self.image = pygame.image.load('./graphics/test/player.png').convert_alpha()
         self.rect: pygame.rect.Rect = self.image.get_rect(topleft = pos)
         self.hitbox = self.rect.inflate(0, -10)
 
