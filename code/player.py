@@ -1,4 +1,3 @@
-from this import d
 import pygame
 from typing import List, Literal
 from settings import *
@@ -7,7 +6,7 @@ from support import import_folder
 from tile import Tile
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, pos, groups, obstacle_sprites: List[Tile]):
+    def __init__(self, pos, groups, obstacle_sprites: List[Tile], create_attack, destroy_attack):
         super().__init__(groups)
         self.image = pygame.image.load('../graphics/test/player.png').convert_alpha()
         self.rect: pygame.rect.Rect = self.image.get_rect(topleft = pos)
@@ -18,12 +17,20 @@ class Player(pygame.sprite.Sprite):
         self.status = 'down'
         self.frame_index = 0
         self.animation_speed = 0.15
+
         #movements
         self.direction = pygame.math.Vector2()
         self.speed: int = 5
         self.attacking = False
         self.attack_cooldown = 400
         self.attack_time = None
+
+        # weapon
+        self.weapon = None
+        self.create_attack = create_attack
+        self.destroy_attack = destroy_attack
+        self.weapon_index = 0
+        self.weapon = list(weapon_data.keys())[self.weapon_index]
 
         self.obstacle_sprites = obstacle_sprites
 
@@ -66,6 +73,7 @@ class Player(pygame.sprite.Sprite):
             if keys[pygame.K_SPACE]:
                 self.attacking = True
                 self.attack_time = pygame.time.get_ticks()
+                self.create_attack()
 
             #magic
             if keys[pygame.K_LCTRL]:
@@ -125,6 +133,7 @@ class Player(pygame.sprite.Sprite):
         if self.attacking:
             if current_time - self.attack_time >= self.attack_cooldown:
                 self.attacking = False
+                self.destroy_attack()
 
     def animate(self):
         animation = self.animations[self.status]
@@ -141,4 +150,3 @@ class Player(pygame.sprite.Sprite):
         self.set_status()
         self.animate()
         self.move(self.speed)
-        debug(self.status)
