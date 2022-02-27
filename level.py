@@ -24,7 +24,7 @@ class Level:
         layouts = {
             'boundary': import_csv_layout('./map/map_FloorBlocks.csv'),
             'grass': import_csv_layout('./map/map_Grass.csv'),
-            'object': import_csv_layout('./map/map_LargeObjects.csv')
+            'object': import_csv_layout('./map/map_Objects.csv')
         }
 
         graphics = {
@@ -46,7 +46,7 @@ class Level:
                         if style == 'object':
                             surf = graphics['objects'][int(col)]
                             Tile((x,y), [self.obstacle_sprites, self.visible_sprites], 'object', surf)
-        self.player: Player = Player((2000,1430), [self.visible_sprites], self.obstacle_sprites)
+        self.player: Player = Player((2150,1430), [self.visible_sprites], self.obstacle_sprites)
 
     def run(self):
         #update and draw the game
