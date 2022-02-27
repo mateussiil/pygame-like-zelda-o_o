@@ -9,7 +9,7 @@ from tile import Tile
 class Player(pygame.sprite.Sprite):
     def __init__(self, pos, groups, obstacle_sprites: List[Tile]):
         super().__init__(groups)
-        self.image = pygame.image.load('./graphics/test/player.png').convert_alpha()
+        self.image = pygame.image.load('../graphics/test/player.png').convert_alpha()
         self.rect: pygame.rect.Rect = self.image.get_rect(topleft = pos)
         self.hitbox = self.rect.inflate(0, -10)
 
@@ -29,7 +29,7 @@ class Player(pygame.sprite.Sprite):
 
     
     def import_player_assets(self):
-        character_path = './graphics/player'
+        character_path = '../graphics/player'
         self.animations = {
             'up': [], 'down': [], 'left': [], 'right': [],
             'up_idle': [], 'down_idle': [], 'left_idle' :[], 'right_idle' :[],

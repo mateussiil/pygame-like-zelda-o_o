@@ -28,8 +28,8 @@ class Level:
         }
 
         graphics = {
-            'grass': import_folder('./graphics/Grass'),
-            'objects': import_folder('./graphics/objects'),
+            'grass': import_folder('../graphics/Grass'),
+            'objects': import_folder('../graphics/objects'),
         }
 
         for style, layout in layouts.items():
@@ -63,7 +63,7 @@ class YSortCamerGroup(pygame.sprite.Group):
         self.offset = pygame.math.Vector2(self.half_width, self.half_height)
         
         #creating the floor
-        self.floor_surf = pygame.image.load('./graphics/tilemap/ground.png').convert()
+        self.floor_surf = pygame.image.load('../graphics/tilemap/ground.png').convert()
         self.floor_rect = self.floor_surf.get_rect(topleft = (0, 0))
 
     def custom_draw(self, player: Player):
