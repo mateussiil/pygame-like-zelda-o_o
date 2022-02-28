@@ -1,6 +1,7 @@
 from random import choice
 import pygame
 import pygame.freetype
+from ui import UI
 from weapon import Weapon  # Import the freetype module.
 from settings import *
 from support import import_csv_layout, import_folder 
@@ -23,6 +24,8 @@ class Level:
 
         # sprite setup
         self.create_map()
+
+        self.ui = UI()
 
     def create_map(self):
         layouts = {
@@ -64,6 +67,7 @@ class Level:
         #update and draw the game
         self.visible_sprites.custom_draw(self.player)
         self.visible_sprites.update()
+        self.ui.display(self.player)
         
 
 class YSortCamerGroup(pygame.sprite.Group):
