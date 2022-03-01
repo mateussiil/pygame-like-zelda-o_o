@@ -4,7 +4,8 @@ from settings import *
 from debug import debug
 from support import import_folder
 from tile import Tile
-class Player(pygame.sprite.Sprite):
+from entity import Entity
+class Player(Entity):
     def __init__(self, pos, groups, obstacle_sprites: List[Tile], create_attack, destroy_attack, create_magic, destroy_magic):
         super().__init__(groups)
         self.image = pygame.image.load('../graphics/test/player.png').convert_alpha()
@@ -14,11 +15,8 @@ class Player(pygame.sprite.Sprite):
         #graphics
         self.import_player_assets()
         self.status = 'down'
-        self.frame_index = 0
-        self.animation_speed = 0.15
 
         #movements
-        self.direction = pygame.math.Vector2()
         self.attacking = False
         self.attack_cooldown = 400
         self.attack_time = None
@@ -50,7 +48,6 @@ class Player(pygame.sprite.Sprite):
 
         self.obstacle_sprites = obstacle_sprites
 
-    
     def import_player_assets(self):
         character_path = '../graphics/player'
         self.animations = {
@@ -134,7 +131,6 @@ class Player(pygame.sprite.Sprite):
         else:
             if 'attack' in self.status:
                 self.status = self.status.replace('_attack', '')
-
 
     def move(self, speed: int):
         if self.direction.magnitude() != 0:
