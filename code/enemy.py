@@ -70,9 +70,19 @@ class Enemy(Entity):
             self.direction = self.get_player_distance_direction(player)[1]
         else:
             self.direction = pygame.math.Vector2()
+    
+    def animate(self):
+        animation = self.animations[self.status]
+        self.frame_index += self.animation_speed
+        if self.frame_index >= len(animation):
+            self.frame_index = 0
+
+        self.image = animation[int(self.frame_index)]
+        self.rect = self.image.get_rect(center = self.hitbox.center)
 
     def update(self):
         self.move(self.speed)
+        self.animate()
     
     def enemy_update(self, player):
         self.get_status(player)
