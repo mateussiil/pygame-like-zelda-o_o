@@ -8,6 +8,7 @@ from settings import *
 from support import import_csv_layout, import_folder 
 from tile import Tile
 from player import Player
+from enemy import Enemy
 from debug import debug
 
 class Level:
@@ -69,8 +70,15 @@ class Level:
                                             self.create_magic,
                                             self.destroy_magic
                                             )
+                            else:
+                                if col == '390': monster_name =  'bamboo'
+                                elif col == '391': monster_name =  'spirit'
+                                elif col == '392': monster_name =  'raccoon'
+                                else: monster_name =  'squid'
 
-                                # Enemy(monster_name, (x,y), [self.visible_sprites], self.obstacle_sprites)
+                                Enemy(monster_name, (x,y), [self.visible_sprites], self.obstacle_sprites)
+        
+
     def create_attack(self):
         self.current_attack = Weapon(self.player, [self.visible_sprites])
 
