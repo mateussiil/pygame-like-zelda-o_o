@@ -63,8 +63,17 @@ class Enemy(Entity):
         else:
             self.status = 'idle'
 
+    def actions(self,player):
+        if self.status == 'attack':
+            pass
+        elif self.status == 'move':
+            self.direction = self.get_player_distance_direction(player)[1]
+        else:
+            self.direction = pygame.math.Vector2()
+
     def update(self):
         self.move(self.speed)
     
     def enemy_update(self, player):
         self.get_status(player)
+        self.actions(player)
