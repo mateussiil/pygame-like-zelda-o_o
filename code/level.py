@@ -23,6 +23,8 @@ class Level:
 
         # atack sprite
         self.current_attack = None
+        self.attack_sprites = pygame.sprite.Group()
+        self.attackable_sprites = pygame.sprite.Group()
 
         # magic sprite
         self.current_magic = None
@@ -55,10 +57,14 @@ class Level:
                             Tile((x,y), [self.obstacle_sprites], 'invisible')
                         if style == 'grass':
                             random_grass_image = choice(graphics['grass'])
-                            Tile((x,y), [self.obstacle_sprites, self.visible_sprites], 'grass', random_grass_image)
+                            Tile(
+                                (x,y), 
+                                [self.visible_sprites,self.obstacle_sprites, self.attackable_sprites], 
+                                'grass', 
+                                random_grass_image)
                         if style == 'object':
                             surf = graphics['objects'][int(col)]
-                            Tile((x,y), [self.obstacle_sprites, self.visible_sprites], 'object', surf)
+                            Tile((x,y), [self.visible_sprites, self.obstacle_sprites], 'object', surf)
                         if style == 'entities':
                             if col == '394':
                                 self.player: Player = Player(
@@ -76,11 +82,16 @@ class Level:
                                 elif col == '392': monster_name =  'raccoon'
                                 else: monster_name =  'squid'
 
-                                Enemy(monster_name, (x,y), [self.visible_sprites], self.obstacle_sprites)
+                                Enemy(
+                                    monster_name, 
+                                    (x,y), 
+                                    [self.visible_sprites, self.attackable_sprites], 
+                                    self.obstacle_sprites
+                                    )
         
 
     def create_attack(self):
-        self.current_attack = Weapon(self.player, [self.visible_sprites])
+        self.current_attack = Weapon(self.player, [self.visible_sprites, self.attack_sprites])
 
     def destroy_attack(self):
         if self.current_attack:
@@ -88,18 +99,29 @@ class Level:
         self.current_attack = None   
 
     def create_magic(self, style, strength, cost):
-        self.current_magic = Magic(self.player, style, strength, cost, [self.visible_sprites])
+        pass
+        # self.current_magic = Magic(self.player, style, strength, cost, [self.visible_sprites])
 
     def destroy_magic(self):
-        if self.current_magic:
-            self.current_magic.kill()
-        self.current_magic = None            
+        pass
+        # if self.current_magic:
+        #     self.current_magic.kill()
+        # self.current_magic = None   
+
+    def player_attack_logic(self):
+        if self.attack_sprites:
+            for attack_sprite in self.attack_sprites:
+                collision_sprites = pygame.sprite.spritecollide(attack_sprite, self.attackable_sprites, False)
+                if collision_sprites:
+                    for target_sprite in collision_sprites:
+                        target_sprite.kill()
          
     def run(self):
         #update and draw the game
         self.visible_sprites.custom_draw(self.player)
         self.visible_sprites.update()
         self.visible_sprites.enemy_update(self.player)
+        self.player_attack_logic()
         self.ui.display(self.player)
         
 
@@ -110,7 +132,7 @@ class YSortCamerGroup(pygame.sprite.Group):
         self.half_width = self.display_surface.get_size()[0] // 2
         self.half_height = self.display_surface.get_size()[1] // 2
         # self.offset = pygame.math.Vector2(self.half_width, self.half_height) Camera in half screen
-        self.offset = pygame.math.Vector2(self.half_width, self.half_height)
+        self.offset = pygame.math.Vector2()
         
         #creating the floor
         self.floor_surf = pygame.image.load('../graphics/tilemap/ground.png').convert()
