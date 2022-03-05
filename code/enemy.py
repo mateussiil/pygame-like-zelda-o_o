@@ -92,6 +92,12 @@ class Enemy(Entity):
 
         self.image = animation[int(self.frame_index)]
         self.rect = self.image.get_rect(center = self.hitbox.center)
+
+        if not self.vulnerable:
+            alpha = 200
+            self.image.set_alpha(alpha)
+        else:
+            self.image.set_alpha(255)
     
     def hit_reaction(self):
         if not self.vulnerable:
