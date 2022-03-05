@@ -160,12 +160,17 @@ class Player(Entity):
                         self.hitbox.bottom = sprite.hitbox.top
                     if self.direction.y < 0: # Moving top  
                         self.hitbox.top = sprite.hitbox.bottom
+    
+    def get_full_weapon_damage(self):
+        base_damage = self.stats['attack']
+        weapon_damage = weapon_data[self.weapon]['damage']
+        return base_damage + weapon_damage
 
     def cooldowns(self):
         current_time = pygame.time.get_ticks()
 
         if self.attacking:
-            if current_time - self.attack_time >= self.attack_cooldown:
+            if current_time - self.attack_time >= self.attack_cooldown + weapon_data[self.weapon]['cooldown']:
                 self.attacking = False
                 self.destroy_attack()
         if not self.can_switch_weapon:
