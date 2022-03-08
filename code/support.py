@@ -1,6 +1,7 @@
 from os import walk
 from csv import reader
 from typing import List
+from settings import *
 
 import pygame
 
