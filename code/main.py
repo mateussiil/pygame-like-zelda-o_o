@@ -19,7 +19,12 @@ class Game:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
-                
+
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_ESCAPE]:
+                    pygame.quit()
+                    sys.exit()
+            
             self.screen.fill('black')
             self.level.run()
             pygame.display.update()
